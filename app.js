@@ -8,8 +8,8 @@ const logger = function (req, res, next) {
   
   app.use(logger)
 
-app.get('/api/sample', (req, res) => {
-  res.json({ message: 'Hello, World!' });
+app.get('/', (req, res) => {
+  res.json({ message: 'Home page!' });
 });
 
 app.get('/api/sample/:name', (req, res) => {
