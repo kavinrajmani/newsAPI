@@ -34,6 +34,18 @@ app.get('/api/news/:id', (req, res) => {
   res.json(newsItem);
 });
 
+// Create a new news item
+app.post('/api/news', (req, res) => {
+  const newsItem = {
+    id: news.length + 1,
+    title: req.body.title,
+    content: req.body.content
+  };
+  
+  news.push(newsItem);
+  res.status(201).json(newsItem);
+});
+
 // Update news by ID
 app.put('/api/news/:id', (req, res) => {
   const id = parseInt(req.params.id);

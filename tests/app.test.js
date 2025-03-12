@@ -27,6 +27,24 @@ describe('News API', () => {
     });
   });
 
+  describe('POST /api/news', () => {
+    it('should create a new news item', async () => {
+      const newNews = {
+        title: 'Test Title',
+        content: 'Test Content'
+      };
+
+      const res = await request(app)
+        .post('/api/news')
+        .send(newNews);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body).toHaveProperty('id');
+      expect(res.body.title).toBe(newNews.title);
+      expect(res.body.content).toBe(newNews.content);
+    });
+  });
+
   describe('PUT /api/news/:id', () => {
     it('should update a news item', async () => {
       const updatedNews = {
