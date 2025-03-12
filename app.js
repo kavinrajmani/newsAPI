@@ -1,19 +1,69 @@
 const express = require('express');
 const app = express();
 
-const logger = function (req, res, next) {
-    console.log('logging')
-    next()
-  }
-  
-  app.use(logger)
+// Add JSON middleware
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Home page!' });
+// Sample news data
+let news = [
+  { id: 1, title: 'First News', content: 'This is the first news article' },
+  { id: 2, title: 'Second News', content: 'This is the second news article' }
+];
+
+const logger = function (req, res, next) {
+  console.log(`Request path: ${req.path}`);
+  next();
+};
+
+app.use(logger);
+
+// Get all news
+app.get('/api/news', (req, res) => {
+  res.json(news);
 });
 
-app.get('/api/sample/:name', (req, res) => {
-  res.json({ message: `Hello, ${req.params.name}!` });
+// Get news by ID
+app.get('/api/news/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const newsItem = news.find(n => n.id === id);
+  
+  if (!newsItem) {
+    return res.status(404).json({ message: 'News not found' });
+  }
+  
+  res.json(newsItem);
+});
+
+// Update news by ID
+app.put('/api/news/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = news.findIndex(n => n.id === id);
+  
+  if (index === -1) {
+    return res.status(404).json({ message: 'News not found' });
+  }
+  
+  const updatedNews = {
+    id: id,
+    title: req.body.title || news[index].title,
+    content: req.body.content || news[index].content
+  };
+  
+  news[index] = updatedNews;
+  res.json(updatedNews);
+});
+
+// Delete news by ID
+app.delete('/api/news/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = news.findIndex(n => n.id === id);
+  
+  if (index === -1) {
+    return res.status(404).json({ message: 'News not found' });
+  }
+  
+  news.splice(index, 1);
+  res.status(204).send();
 });
 
 module.exports = app;
