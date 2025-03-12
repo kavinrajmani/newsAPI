@@ -7,7 +7,8 @@ app.use(express.json());
 // Sample news data
 let news = [
   { id: 1, title: 'First News', content: 'This is the first news article' },
-  { id: 2, title: 'Second News', content: 'This is the second news article' }
+  { id: 2, title: 'Second News', content: 'This is the second news article' },
+  { id: 2, title: 'Third News', content: 'This is the third news article' }
 ];
 
 const logger = function (req, res, next) {
